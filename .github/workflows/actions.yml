@@ -20,7 +20,8 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      
+      - name: Read env
+        run: bash read_env.sh
 
       - name: Terraform Plan
         env:
@@ -30,6 +31,3 @@ jobs:
             __SECRET: ${{secrets.__SECRET}}
 
         run: terraform plan
-
-      - name: Read env
-        run: bash read_env.sh
