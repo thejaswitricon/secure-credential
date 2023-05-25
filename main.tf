@@ -39,6 +39,10 @@ data "external" "env_values" {
 
 locals {
   secrets = csvdecode(file(var.csv_path))
+  evaluateNonEmptyString = {
+    for key, value in data.external.env_values.result :
+    replace(key, "[^A-Za-z0-9]", "") => value != "" ? value : null
+  }
 }
 
 # ------------------------------------------------------------------------------
@@ -52,7 +56,7 @@ resource "newrelic_synthetics_secure_credential" "credential" {
     record.key => record
   }
   key         = each.value.key
-  value       = data.external.env_values.result[replace(each.value.key, "[^A-Za-z0-9]", "")]
+  value       = local.evaluateNonEmptyString[each.value.key]
   description = each.value.description
 }
 

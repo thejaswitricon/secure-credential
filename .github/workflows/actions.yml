@@ -20,6 +20,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Run shell command
+        run: |
+          echo "The value of MY_SECRET is: ${{ secrets.__SECRET }}"
+          # Use the secret in your shell command
+
       - name: Read env
         run: bash read_env.sh
 
