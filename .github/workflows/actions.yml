@@ -24,6 +24,7 @@ jobs:
         env:
             NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
             NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
+            __SECURE_CREDENTIAL: ${{secrets.__SECURE_CREDENTIAL}}
         run: terraform plan
 
         
