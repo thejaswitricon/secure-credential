@@ -12,23 +12,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-    
-      - name: Use the secret in a bash script
+
+      - name: Find and pass secrets to script
         run: |
-          bash read_env.sh "${{ secrets.__SECRET }}"
+          # Find all secrets starting with "__"
+          for secret in $(env | grep -oP '^__\w+'); do
+            # Pass each secret to the script
+            bash read_env.sh "${!secret}"
+          done
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
+
       - name: Terraform Init
         run: terraform init
 
-      - name: Read env
-        run: bash read_env.sh "${{ secrets.NEW_RELIC_ACCOUNT_ID }}" "${{ secrets.NEW_RELIC_API_KEY }}"
-
       - name: Terraform Plan
         env:
-            NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
-            NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
+          NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
         run: terraform plan
