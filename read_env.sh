@@ -8,6 +8,9 @@ first=true
 for secret_name in $(env | grep -oP "^secrets\.\K.*|^__\K.*"); do
   value=$(printenv "$secret_name")  # Fetch the secret value dynamically using the secret name
 
+  # Remove the "__" prefix from the secret name
+  secret_name=${secret_name/#__/}
+
   # Append the secret to the JSON object
   if [ "$first" = true ]; then
     first=false
