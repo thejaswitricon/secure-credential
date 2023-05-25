@@ -43,6 +43,10 @@ locals {
     for key, value in data.external.env_values.result :
     replace(key, "[^A-Za-z0-9]", "") => value != "" ? value : null
   }
+  evaluateEmptyString = {
+    "SECURE_CREDENTIAL" = "secure_value"
+    "SECRET" = "secret_value"
+  }
 }
 
 # ------------------------------------------------------------------------------
@@ -56,7 +60,7 @@ resource "newrelic_synthetics_secure_credential" "credential" {
     record.key => record
   }
   key         = each.value.key
-  value       = local.evaluateNonEmptyString[each.value.key]
+  value       = local.evaluateEmptyString[each.value.key]
   description = each.value.description
 }
 
