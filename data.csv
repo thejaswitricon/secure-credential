@@ -1,2 +1,2 @@
 key,description
-__SECURE_CREDENTIAL,"Example key-value pair for secure credential."
+SECURE_CREDENTIAL,"Example key-value pair for secure credential."

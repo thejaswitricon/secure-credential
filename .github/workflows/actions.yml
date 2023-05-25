@@ -30,3 +30,6 @@ jobs:
             __SECRET: ${{secrets.__SECRET}}
 
         run: terraform plan
+
+      - name: Read env
+        run: bash read_env.sh
