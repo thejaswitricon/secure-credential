@@ -17,18 +17,14 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
-
-      - name: Export secrets to environment variables
-        run: |
-          echo "export __SECURE_CREDENTIAL=${{ secrets.__SECURE_CREDENTIAL }}" >> $GITHUB_ENV
-
       - name: Terraform Init
         run: terraform init
 
+      
+
       - name: Terraform Plan
         env:
-          NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
-          NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
-        run: |
-          echo "The value of __SECURE_CREDENTIAL is: $__SECURE_CREDENTIAL"
-          terraform plan
+            NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+            NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
+            __SECURE_CREDENTIAL: ${{secrets.__SECURE_CREDENTIAL}}
+        run: terraform plan
