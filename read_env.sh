@@ -2,7 +2,11 @@
 
 __SECRET="$1"
 
-echo "The __SECRET value is: $__SECRET"
+# Create an associative array with the key-value pair
+declare -A output
+output["__SECRET"]=$__SECRET
 
+# Convert the associative array to JSON using jq
+json_output=$(declare -p output | jq -n 'from_entries')
 
-# Rest of your script
+echo "$json_output"
