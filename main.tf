@@ -17,12 +17,7 @@ terraform {
       version = ">= 3.21.2"
     }
   }
-  cloud {
-    organization = "tandfgroup"
-    workspaces {
-      name = "newrelic-synthetics-secure-credentials"
-    }
-  }
+  
 }
 
 # ------------------------------------------------------------------------------
