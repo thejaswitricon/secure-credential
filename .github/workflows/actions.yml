@@ -15,8 +15,7 @@ jobs:
     
       - name: Use the secret in a bash script
         run: |
-          MY_SECRET_VALUE="${{ secrets.__SECRET }}"
-          bash read_env.sh "$MY_SECRET_VALUE"
+          bash read_env.sh "${{ secrets.__SECRET }}"
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
@@ -32,6 +31,4 @@ jobs:
         env:
             NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
             NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
-            
-
         run: terraform plan
