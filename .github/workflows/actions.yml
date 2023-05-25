@@ -1,42 +1,40 @@
-name: Terraform Plan
+name: Read GitHub Secrets
 
 on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  terraform:
+  read_secrets:
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
     
-    #   - name: Use the secret in a bash script
-    #     run: |
-    #       bash read_env.sh "${{ secrets.__SECRET }}"
-
-      - name: Install jq
-        run: sudo apt-get install -y jq
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.0
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Read env
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+          
+      - name: Read Secrets
         run: |
-          echo "Searching GitHub secrets"
-          for secret_name in $(echo "${{ secrets }}" | jq -r 'to_entries[] | select(.key | startswith("__")) | .value'); do
-            echo "${secret_name}" >> secrets.txt
-          done
-          bash read_env.sh "$(cat secrets.txt)"
-
-      - name: Terraform Plan
-        env:
-          NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
-          NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
-        run: terraform plan
+          # Extract secrets starting with "__"
+          secrets=$(env | grep -E '^__[[:alnum:]_]+=.*$' | cut -d= -f1)
+          
+          # Convert secrets to JSON object
+          secrets_json=$(echo "$secrets" | awk '{printf("\"%s\":\"%s\",", $0, ENVIRON[$0])}' | sed 's/,$//')
+          
+          # Write secrets to read_env.sh
+          echo "{ $secrets_json }" > read_env.sh
+          
+          # Display the contents of read_env.sh
+          cat read_env.sh
+          
+      - name: Execute read_env.sh
+        run: |
+          # Make read_env.sh executable
+          chmod +x read_env.sh
+          
+          # Execute read_env.sh
+          ./read_env.sh

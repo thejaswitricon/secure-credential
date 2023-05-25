@@ -1,8 +1,15 @@
 #!/bin/bash
 
-# The script takes the secret as an argument
-secret=$1
+# Parse input as JSON and iterate over key-value pairs
+jq -r 'to_entries[] | select(.key | startswith("__")) | .key + "=" + .value' |
+while IFS='=' read -r key value; do
+  # Remove the leading "__" from the key
+  secret_key="${key:2}"
 
-# Use the secret in your desired way
-# For example, you can echo the secret
-echo "Received secret: $secret"
+  # Process the secret value as per your requirement
+  # For example, you can export it as an environment variable
+  export "$secret_key"="$value"
+
+  # Print the exported key-value pair (optional)
+  echo "Exported: $secret_key=$value"
+done
