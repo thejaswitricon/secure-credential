@@ -21,4 +21,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
+        env:
+            NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+            NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
         run: terraform plan
+
+        
