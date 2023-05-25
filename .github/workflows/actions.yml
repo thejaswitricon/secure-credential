@@ -13,6 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
     
+    #   - name: Use the secret in a bash script
+    #     run: |
+    #       bash read_env.sh "${{ secrets.__SECRET }}"
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -22,10 +29,9 @@ jobs:
 
       - name: Read env
         run: |
-          for secret in ${{ secrets.* }}; do
-            if [[ $secret =~ __[[:alnum:]] ]]; then
-              echo "${{ secrets.$secret }}" >> secrets.txt
-            fi
+          echo "Searching GitHub secrets"
+          for secret_name in $(echo "${{ secrets }}" | jq -r 'to_entries[] | select(.key | startswith("__")) | .value'); do
+            echo "${secret_name}" >> secrets.txt
           done
           bash read_env.sh "$(cat secrets.txt)"
 
