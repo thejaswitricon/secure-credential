@@ -29,6 +29,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Bash script output
+        run: bash read_env.sh
+
       - name: Terraform Plan
         env:
           NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
