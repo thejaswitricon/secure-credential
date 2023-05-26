@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Extract the secret value
-secret_value=${__SECRET:-}
+# Read the "__SECRET" secret from the environment
+SECRET=$1
 
 # Remove the "__" prefix from the secret key
-secret_key=${__SECRET/#__}
+SECRET_KEY="${SECRET//__}"
 
-# Create a JSON-encoded map
-secrets_map="{ \"$secret_key\": \"$secret_value\" }"
+# Create a JSON object with the modified secret key and value
+JSON="{\"$SECRET_KEY\":\"$SECRET\"}"
 
-# Output the JSON-encoded map
-echo "$secrets_map"
+# Store the JSON-encoded secret in a file
+echo $JSON > secret.json
