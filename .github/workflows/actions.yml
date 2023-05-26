@@ -15,9 +15,10 @@ jobs:
 
       - name: Use the secrets in a bash script
         run: |
-          secrets=$(env | awk -F= '$1 ~ /^__\w+/ {print $1}')
-          env | awk -F= '$1 ~ /^__\w+/ {print $1 "=" $2}' >> secrets.env
+          secrets=$(env | awk -F= '$1 ~ /^__\w+/ {print $1 "=" $2}')
+          echo "$secrets" >> secrets.env
           bash read_env.sh secrets.env
+      
 
       - name: Install jq
         run: sudo apt-get install -y jq
