@@ -1,10 +1,25 @@
 #!/bin/bash
 
-# Extract the secret value
-secret_value=${__SECRET:-}
+# This script receives the secret value as an argument
+secret_value=$1
 
-# Create a JSON-encoded map
-secrets_map="{ \"__SECRET\": \"$secret_value\" }"
+# Print the secret value
+echo "Secret value: $secret_value"
 
-# Output the JSON-encoded map
-echo "$secrets_map"
+# Perform some actions using the secret value
+# Add your custom logic here
+
+# Example: Check if the secret value is empty
+if [ -z "$secret_value" ]; then
+    echo "The secret value is empty."
+else
+    echo "The secret value is not empty."
+fi
+
+# Example: Use the secret value in a command
+# Replace this with your own command using the secret value
+echo "Using the secret value in a command:"
+echo "Hello $secret_value!"
+
+# Add more actions as needed
+
