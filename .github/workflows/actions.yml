@@ -15,8 +15,10 @@ jobs:
     
       - name: Use the secret in a bash script
         run: |
-          bash read_env.sh "${{ secrets.__SECRET }}"
-          echo "${{secrets.__SECRET}}"
+          MY_SECRET="${{ secrets.__SECRET }}"
+          bash read_env.sh "$MY_SECRET"
+          echo "$MY_SECRET"
+      
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
