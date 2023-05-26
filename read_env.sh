@@ -11,3 +11,4 @@ JSON="{\"$SECRET_KEY\":\"$SECRET\"}"
 
 # Store the JSON-encoded secret in a file
 echo $JSON > secret.json
+
