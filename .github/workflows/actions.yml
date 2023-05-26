@@ -1,40 +1,37 @@
-name: Read GitHub Secrets
+name: Terraform Plan
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 
 jobs:
-  read_secrets:
+  terraform:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
-        
-          
-      - name: Read Secrets
+
+      - name: Use the secrets in a bash script
         run: |
-          # Extract secrets starting with "__"
-          secrets=$(env | grep -E '^__[[:alnum:]_]+=.*$' | cut -d= -f1)
-          
-          # Convert secrets to JSON object
-          secrets_json=$(echo "$secrets" | awk '{printf("\"%s\":\"%s\",", $0, ENVIRON[$0])}' | sed 's/,$//')
-          
-          # Write secrets to read_env.sh
-          echo "{ $secrets_json }" > read_env.sh
-          
-          # Display the contents of read_env.sh
-          cat read_env.sh
-          
-      - name: Execute read_env.sh
-        run: |
-          # Make read_env.sh executable
-          chmod +x read_env.sh
-          
-          # Execute read_env.sh
-          ./read_env.sh
+          secrets=$(env | awk -F= '$1 ~ /^__\w+/ {print $1}')
+          env | awk -F= '$1 ~ /^__\w+/ {print $1 "=" $2}' >> secrets.env
+          bash read_env.sh secrets.env
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        env:
+          NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
+        run: terraform plan
