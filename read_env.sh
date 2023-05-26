@@ -7,7 +7,7 @@ SECRET=$1
 SECRET_KEY="${SECRET//__}"
 
 # Create a JSON object with the modified secret key and value
-JSON="{ \"$SECRET_KEY\": \"$SECRET\" }"
+JSON=$(jq -n --arg key "$SECRET_KEY" --arg value "$SECRET" '{"\($key)": "\($value)"}')
 
 # Store the JSON-encoded secret in a file
-echo "{ \"secrets\": $JSON }" > secret.json
+echo $JSON > secret.json
