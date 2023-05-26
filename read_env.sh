@@ -1,12 +1,10 @@
 #!/bin/bash
 
-__SECRET="$1"
+# Extract the secret value
+secret_value=${__SECRET:-}
 
-# Create an associative array with the key-value pair
-declare -A output
-output["__SECRET"]=$__SECRET
+# Create a JSON-encoded map
+secrets_map="{ \"__SECRET\": \"$secret_value\" }"
 
-# Convert the associative array to JSON using jq
-json_output=$(declare -p output | jq -n 'from_entries')
-
-echo "$json_output"
+# Output the JSON-encoded map
+echo "$secrets_map"
