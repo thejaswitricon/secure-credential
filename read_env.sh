@@ -1,16 +1,23 @@
 #!/bin/bash
 
-# Read the secret from the workflow input
-secret="$1"
+# Store the secrets in an array
+secrets=("$@")
 
-# Create an empty associative array
-declare -A json_map
+# Create an empty JSON object
+JSON_OBJECT="{"
 
-# Set the "secret" key to the provided secret value
-json_map["secret"]="$secret"
+# Iterate over each secret
+for secret in "${secrets[@]}"; do
+  # Extract the key and value from the secret
+  KEY=$(echo "$secret" | cut -d'=' -f1)
+  VALUE=$(echo "$secret" | cut -d'=' -f2-)
 
-# Convert the associative array to JSON
-json=$(jq -n "$(declare -p json_map)")
+  # Add the key-value pair to the JSON object
+  JSON_OBJECT+="\"$KEY\": \"$VALUE\", "
+done
 
-# Output the JSON-encoded map
-echo "$json" > secret.json
+# Remove the trailing comma and space
+JSON_OBJECT="${JSON_OBJECT%, *} }"
+
+# Save the JSON object to a file
+echo "$JSON_OBJECT" > secret.json
