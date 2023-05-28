@@ -1,10 +1,19 @@
 #!/bin/bash
 
-SECRET_JSON="$1"
+# Read the secret from the workflow input
+secret="$1"
 
-# Decode the JSON object and extract the secret value
-ENCODED_SECRET=$(echo "$SECRET_JSON" | jq -r '.secret')
-SECRET=$(echo "$ENCODED_SECRET" | base64 -d)
+# Create an associative array to store key-value pairs
+declare -A json_map
 
-# Use the SECRET variable in your script as needed
-echo "Decoded secret: $SECRET"
+# Store the secret in the associative array
+json_map["secret"]=$secret
+
+# Convert the associative array to JSON
+json=$(declare -p json_map)
+json=${json#*=}
+json=${json#'{'}
+json=${json%'}'}
+
+# Output the JSON-encoded map
+echo "$json" > secret.json
