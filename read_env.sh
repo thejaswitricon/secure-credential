@@ -1,23 +1,11 @@
 #!/bin/bash
 
-# Store the secrets in an array
-secrets=("$@")
+# Store the secret key and value
+SECRET_KEY="$1"
+SECRET_VALUE="$2"
 
-# Create an empty JSON object
-JSON_OBJECT="{"
-
-# Iterate over each secret
-for secret in "${secrets[@]}"; do
-  # Extract the key and value from the secret
-  KEY=$(echo "$secret" | cut -d'=' -f1)
-  VALUE=$(echo "$secret" | cut -d'=' -f2-)
-
-  # Add the key-value pair to the JSON object
-  JSON_OBJECT+="\"$KEY\": \"$VALUE\", "
-done
-
-# Remove the trailing comma and space
-JSON_OBJECT="${JSON_OBJECT%, *} }"
+# Create a JSON object with the key-value pair
+JSON_OBJECT="{ \"$SECRET_KEY\": \"$SECRET_VALUE\" }"
 
 # Save the JSON object to a file
 echo "$JSON_OBJECT" > secret.json
