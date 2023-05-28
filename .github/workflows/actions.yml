@@ -15,8 +15,9 @@ jobs:
     
       - name: Use the secret in a bash script
         run: |
-          MY_SECRET="${{ secrets.__SECRET }}"
-          bash read_env.sh "$MY_SECRET"
+          SECRET_KEY="__SECRET"
+          SECRET_VALUE="${{ secrets.__SECRET }}"
+          bash read_env.sh "$SECRET_KEY" "$SECRET_VALUE"
           echo "$MY_SECRET"
       
 
