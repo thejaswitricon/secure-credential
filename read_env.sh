@@ -1,25 +1,10 @@
 #!/bin/bash
 
-# This script receives the secret value as an argument
-secret_value=$1
+SECRET_JSON="$1"
 
-# Print the secret value
-echo "Secret value: $secret_value"
+# Decode the JSON object and extract the secret value
+ENCODED_SECRET=$(echo "$SECRET_JSON" | jq -r '.secret')
+SECRET=$(echo "$ENCODED_SECRET" | base64 -d)
 
-# Perform some actions using the secret value
-# Add your custom logic here
-
-# Example: Check if the secret value is empty
-if [ -z "$secret_value" ]; then
-    echo "The secret value is empty."
-else
-    echo "The secret value is not empty."
-fi
-
-# Example: Use the secret value in a command
-# Replace this with your own command using the secret value
-echo "Using the secret value in a command:"
-echo "Hello $secret_value!"
-
-# Add more actions as needed
-
+# Use the SECRET variable in your script as needed
+echo "Decoded secret: $SECRET"
