@@ -31,7 +31,7 @@ variable "csv_path" {
 }
 
 data "external" "env_values" {
-  program = ["bash", "read_env.sh", "${var.my_secret}"]
+  program = ["bash", "read_env.sh"]
 }
 # ------------------------------------------------------------------------------
 # Local Variable Definition
