@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Store the secret key and value
-SECRET_KEY="$1"
-SECRET_VALUE="$2"
+# Store the secret in a variable
+MY_SECRET="$1"
 
-# Create a JSON object with the key-value pair
-JSON_OBJECT="{ \"$SECRET_KEY\": \"$SECRET_VALUE\" }"
+# Create a JSON object with the secret
+JSON_OBJECT="{ \"secret\": \"$MY_SECRET\" }"
 
-# Save the JSON object to a file
-echo "$JSON_OBJECT" > secret.json
+# Output the JSON object
+echo "$JSON_OBJECT"
