@@ -4,7 +4,7 @@ SECRET_KEY="$1"
 SECRET_VALUE="$2"
 
 # Create a JSON object with the secret key-value pair
-json="{ \"$SECRET_KEY\": \"$SECRET_VALUE\" }"
+json="{ \"${SECRET_KEY}\": \"${SECRET_VALUE}\" }"
 
 # Output the JSON object
 echo "$json"
