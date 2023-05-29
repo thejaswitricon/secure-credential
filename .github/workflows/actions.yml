@@ -12,14 +12,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-           
+
       - name: View the secrets context
         shell: bash
         run: |
-          echo "$SECRETS_CONTEXT" > secrets.json
-          ./read_env.sh secrets.json
-        env:
-          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+          echo '${{ toJson(secrets) }}' > secrets.json
+          ./read_env.sh $(cat secrets.json)
+      
+           
+      # - name: View the secrets context
+      #   shell: bash
+      #   run: |
+      #     echo "$SECRETS_CONTEXT" > secrets.json
+      #     ./read_env.sh secrets.json
+      #   env:
+      #     SECRETS_CONTEXT: ${{ toJson(secrets) }}
         
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
