@@ -1,10 +1,14 @@
 #!/bin/bash
 
-# Fetch the secret value from GitHub using an appropriate method
-# and output it to stdout
-secret_value=$(gh secret get secure-credential --secret __SECRET --json value --jq .value)
+SECRET_KEY="$1"
+SECRET_VALUE="$2"
 
-echo "$secret_value"
+# Create a JSON object with the secret key-value pair
+json="{ \"$SECRET_KEY\": \"$SECRET_VALUE\" }"
+
+# Output the JSON object
+echo "$json"
+
 
 
 
