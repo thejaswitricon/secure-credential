@@ -30,38 +30,42 @@ variable "csv_path" {
   default     = "./data.csv"
 }
 
-data "external" "env_values" {
+data "external" "github_secret" {
   program = ["bash", "read_env.sh"]
+
+  # depends_on = [github_repository.example]  # Add dependencies if needed
 }
 # ------------------------------------------------------------------------------
 # Local Variable Definition
 # ------------------------------------------------------------------------------
 
-locals {
-  secrets = csvdecode(file(var.csv_path))
-  evaluateNonEmptyString = {
-    for key, value in data.external.env_values.result :
-    replace(key, "[^A-Za-z0-9]", "") => value != "" ? value : null
-  }
-}
+# locals {
+#   secrets = csvdecode(file(var.csv_path))
+#   evaluateNonEmptyString = {
+#     for key, value in data.external.env_values.result :
+#     replace(key, "[^A-Za-z0-9]", "") => value != "" ? value : null
+#   }
+# }
 
-# ------------------------------------------------------------------------------
-# Main Terraform Configuration
-# ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# # Main Terraform Configuration
+# # ------------------------------------------------------------------------------
 
-# https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/synthetics_secure_credential
-resource "newrelic_synthetics_secure_credential" "credential" {
-  for_each = {
-    for index, record in local.secrets :
-    record.key => record
-  }
-  key         = each.value.key
-  value       = local.evaluateNonEmptyString[each.value.key]
-  description = each.value.description
-}
+# # https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/synthetics_secure_credential
+# resource "newrelic_synthetics_secure_credential" "credential" {
+#   for_each = {
+#     for index, record in local.secrets :
+#     record.key => record
+#   }
+#   key         = each.value.key
+#   value       = local.evaluateNonEmptyString[each.value.key]
+#   description = each.value.description
+# }
 
 # ------------------------------------------------------------------------------
 # Output Variable Declaration
 # ------------------------------------------------------------------------------
 
-//
+output "my_secret_value" {
+  value = data.external.github_secret.result
+}
