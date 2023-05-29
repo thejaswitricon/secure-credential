@@ -13,11 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
     
-      - name: view the secrets context
+      - name: View the secrets context
         shell: bash
-        run: echo "$SECRETS_CONTEXT"
+        run: |
+          echo "$SECRETS_CONTEXT" > secrets.json
+          ./read_env.sh secrets.json
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
+      
           
       
 
