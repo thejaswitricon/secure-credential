@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
     
+      - name: view the secrets context
+        shell: bash
+        run: echo "$SECRETS_CONTEXT"
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+          
       - name: View the secrets context
         shell: bash
         run: |
@@ -20,10 +26,7 @@ jobs:
           ./read_env.sh secrets.json
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
-      
-          
-      
-
+        
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
