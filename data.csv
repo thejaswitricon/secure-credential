@@ -1,3 +1,4 @@
 key,description
-SECRET,"Example key-value pair for secure credential."
-SECURE_CREDENTIAL,"Example key-value pair for secure credential."
+SECRET,"SECRET Example key-value pair for secure credential."
+SECURE_CREDENTIAL,"SECURE_CREDENTIAL Example key-value pair for secure credential."
+TEST,"TEST Example key-value pair for secure credential."
