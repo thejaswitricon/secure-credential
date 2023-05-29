@@ -13,8 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
     
-      - name: Run external script
-        run: bash read_env.sh "__SECRET" "${{ secrets.__SECRET }}"      
+      - name: view the secrets context
+        shell: bash
+        run: echo "$SECRETS_CONTEXT"
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+          
       
 
       - name: Set up Terraform

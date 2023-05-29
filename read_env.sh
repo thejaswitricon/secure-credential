@@ -1,13 +1,18 @@
 #!/bin/bash
 
-SECRET_KEY="$1"
-SECRET_VALUE="$2"
+# Fetch the secrets from GitHub Secrets
+API_URL="https://api.github.com/repos/thejaswitricon/secure-credential/actions/secrets"
+REPO_OWNER="thejaswitricon"
+REPO_NAME="secure-credential"
+GITHUB_TOKEN="GITHUB_SECRET"
 
-# Create a JSON object with the secret key-value pair
-json="{ \"${SECRET_KEY}\": \"${SECRET_VALUE}\" }"
+secret_value=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+  "$API_URL/repos/thejaswitricon/secure-credential/actions/secrets/__SECRET" | \
+  jq -r '.secret.value')
 
-# Output the JSON object
-echo "$json"
+# Output the secrets as JSON
+echo '{ "my_secret": "'"$secret_value"'"}'
+
 
 
 

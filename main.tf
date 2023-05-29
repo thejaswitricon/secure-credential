@@ -30,8 +30,8 @@ variable "csv_path" {
   default     = "./data.csv"
 }
 
-data "external" "env_values" {
-  program = ["bash", "read_env.sh"]
+data "external" "github_secrets" {
+  program = ["${path.module}/read_env.sh"]
 }
 # ------------------------------------------------------------------------------
 # Local Variable Definition
@@ -40,7 +40,7 @@ data "external" "env_values" {
 locals {
   secrets = csvdecode(file(var.csv_path))
   evaluateNonEmptyString = {
-    for key, value in data.external.env_values.result :
+    for key, value in data.external.github_secrets.result :
     replace(key, "[^A-Za-z0-9]", "") => value != "" ? value : null
   }
 }
