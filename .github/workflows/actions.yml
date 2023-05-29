@@ -13,12 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
     
-      - name: Use the secret in a bash script
-        run: |
-          SECRET_KEY="__SECRET"
-          SECRET_VALUE="${{ secrets.__SECRET }}"
-          bash read_env.sh "$SECRET_KEY" "$SECRET_VALUE"
-          echo "$MY_SECRET"
+      - name: Run external script
+        run: bash read_env.sh "__SECRET" "${{ secrets.MY_SECRET }}"
       
 
       - name: Set up Terraform
