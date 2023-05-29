@@ -18,6 +18,8 @@ jobs:
         run: echo "$SECRETS_CONTEXT"
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
+           echo '${{ toJson(secrets) }}' > secrets.json
+
           
       - name: View the secrets context
         shell: bash
