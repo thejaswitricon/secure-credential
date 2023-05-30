@@ -15,7 +15,7 @@ jobs:
 
       - name: View the secrets context
         shell: bash
-        run: ./extract_secrets.sh
+        run: ./read_env.sh
       
 
       # - name: View the secrets context
