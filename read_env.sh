@@ -1,5 +1,8 @@
 #!/bin/bash
 
+secrets_json="$1"
+echo "Reading secrets from: $secrets_json"
+
 # Read the secrets from the JSON file
 secrets=$(cat secrets.json)
 
