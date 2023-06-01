@@ -30,12 +30,11 @@ jobs:
       #       echo "read_env.sh not found. Skipping execution."
       #     fi
 
-
-      # - name: View the secrets context
-      #   shell: bash
-      #   run: |
-      #     echo '${{ toJson(secrets) }}' > secrets.json
-      #     ./read_env.sh $(cat secrets.json)
+      - name: View the secrets context
+        shell: bash
+        run: |
+          echo '${{ toJson(secrets) }}' > secrets.json
+          ./read_env.sh $(cat secrets.json)
       
                    
       - name: Set up Terraform
