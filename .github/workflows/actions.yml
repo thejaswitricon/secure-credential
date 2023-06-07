@@ -13,11 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Get the name of the directory that was changed
       - name: Get changed directories
         id: changed_dirs
         run: |
-          echo "::set-output name=dirs::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | awk -F/ '{print $0}' | sort -u)"
+          echo "$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | awk -F/ '{print $0}' | sort -u)" >> $GITHUB_ENV
+      
+      - name: Use changed directories
+        run: |
+          # Access the changed directories from the environment file
+          echo "Changed Directories: ${{ env.dirs }}"
+      
 
       # - name: View the secrets context
       #   shell: bash
