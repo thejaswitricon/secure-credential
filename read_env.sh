@@ -8,4 +8,3 @@ extracted_secrets=$(echo "$secrets" | jq 'with_entries(select(.key | startswith(
 
 # Output the extracted secrets as JSON
 echo "$extracted_secrets"
-
