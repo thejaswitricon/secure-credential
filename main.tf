@@ -65,3 +65,4 @@ resource "newrelic_synthetics_secure_credential" "credential" {
 # ------------------------------------------------------------------------------
 
 //
+

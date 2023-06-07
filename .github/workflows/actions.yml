@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Get the name of the directory that was changed
+      - name: Get changed directories
+        id: changed_dirs
+        run: |
+          echo "::set-output name=dirs::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | awk -F/ '{print $0}' | sort -u)"
+
       # - name: View the secrets context
       #   shell: bash
       #   run: |
