@@ -23,7 +23,6 @@ jobs:
             fi
           done
       
-      
 
       # - name: View the secrets context
       #   shell: bash
