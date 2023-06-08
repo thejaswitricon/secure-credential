@@ -16,8 +16,12 @@ jobs:
       - id: files
         uses: jitterbit/get-changed-files@v1
       - run: |
-          grep -o 'modules/[^/]*' <<< "${{ steps.files.outputs.all }}"
-      
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            if [[ $changed_file == *"modules"* ]]; then
+              folder_path=$(dirname "${changed_file}")
+              echo "${folder_path}."
+            fi
+          done
       
 
       # - name: View the secrets context
